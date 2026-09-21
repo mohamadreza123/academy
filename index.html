@@ -202,7 +202,6 @@
             padding-right: 15px;
         }
 
-        /* بخش معرفی مربی */
         .coach-profile {
             display: grid;
             grid-template-columns: 1fr 2fr;
@@ -275,7 +274,6 @@
             flex-wrap: wrap;
         }
 
-        /* بانک حرکات ورزشی */
         .exercise-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -534,22 +532,6 @@
 
         .footer-col a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary-glow); }
 
-        .newsletter-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .newsletter-form input {
-            flex: 1;
-            padding: 12px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--card-border);
-            border-radius: 10px;
-            color: #fff;
-            outline: none;
-        }
-
         .footer-bottom {
             text-align: center;
             border-top: 1px solid rgba(255,255,255,0.06);
@@ -622,6 +604,7 @@
             </ul>
         </nav>
         <div class="nav-buttons">
+            <button class="btn btn-outline" onclick="openRegisterModal()" style="border-color: var(--success); color: var(--success);">📝 ثبت‌نام ورزشکار</button>
             <button class="btn btn-outline" onclick="openAdminModal()">🔐 ورود مربی</button>
             <button class="btn btn-primary" onclick="openLoginModal()">👤 ورود ورزشکار</button>
         </div>
@@ -845,6 +828,21 @@
         </div>
     </main>
 
+    <!-- مودال ثبت‌نام مستقل ورزشکار -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
+            <h3 style="color: var(--primary); margin-bottom: 20px;">📝 ثبت‌نام مستقل ورزشکار</h3>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">اطلاعات خود را وارد کنید تا حساب کاربری شما در آکادمی ساخته شود:</p>
+            <div style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" id="reg-name" placeholder="نام و نام خانوادگی">
+                <input type="text" id="reg-phone" placeholder="شماره تماس (به عنوان نام کاربری)" maxlength="11">
+                <input type="password" id="reg-pass" placeholder="رمز عبور دلخواه">
+                <button class="btn btn-primary" style="margin-top: 10px; padding: 14px;" onclick="registerNewAthlete()">تایید و ایجاد حساب</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
@@ -853,479 +851,72 @@
                 <p><b>تلفن تماس:</b> 09134081300</p>
             </div>
             <div class="footer-col">
-                <h3>آدرس باشگاه</h3>
-                <p>خیابان رکن‌الدوله شرقی، حدفاصل اتوبان و خیابان نیرو، ساختمان پانژه، اولین درب سمت چپ، زنگ ۱</p>
-                <div style="display: flex; gap: 15px; margin-top: 15px;">
-                    <a href="#">اینستاگرام</a>
-                    <a href="#">تلگرام</a>
-                    <a href="#">واتس‌اپ</a>
-                </div>
+                <h3>دسترسی سریع</h3>
+                <a onclick="goToHome()">صفحه اصلی سایت</a>
+                <a onclick="navigateTo('coach-section')">درباره استاد فرید آقادادی</a>
+                <a onclick="navigateTo('schedule')">جدول سانس‌های تمرینی</a>
+                <a onclick="navigateTo('exercise-library')">بانک حرکات ورزشی</a>
             </div>
             <div class="footer-col">
-                <h3>خبرنامه و مشاوره سریع</h3>
-                <p>برای دریافت نکات آموزشی شماره خود را وارد کنید:</p>
-                <div class="newsletter-form">
-                    <input type="text" placeholder="شماره تماس...">
-                    <button class="btn btn-primary" onclick="showToast('با موفقیت در خبرنامه ثبت‌نام کردید.', 'success')">عضویت</button>
-                </div>
+                <h3>ارتباط با ما</h3>
+                <p><b>آدرس:</b> اصفهان، خیابان رکن‌الدوله شرقی، ساختمان پانژه</p>
+                <p>جهت هماهنگی حضور در باشگاه با شماره تماس مستقیم آکادمی در ارتباط باشید.</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>تمامی حقوق محفوظ است © ۲۰۲۶ | آکادمی تخصصی استاد فرید آقادادی</p>
+            <p>کلیه حقوق این سامانه متعلق به آکادمی تخصصی تناسب اندام استاد فرید آقادادی می‌باشد.</p>
         </div>
     </footer>
 
-    <!-- مودال درخواست برنامه -->
-    <div id="program-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('program-modal')">&times;</span>
-            <h3 id="modal-title" style="color: var(--primary); margin-bottom: 20px; text-align: center;">فرم درخواست برنامه</h3>
-            <input type="text" id="p-name" placeholder="نام و نام خانوادگی" style="margin-bottom: 12px;">
-            <input type="text" id="p-phone" placeholder="شماره تماس (۱۱ رقم)" maxlength="11" style="margin-bottom: 12px;">
-            <input type="number" id="p-weight" placeholder="وزن (کیلوگرم)" style="margin-bottom: 12px;">
-            <input type="number" id="p-height" placeholder="قد (سانتی‌متر)" style="margin-bottom: 12px;">
-            <textarea id="p-goal-text" placeholder="هدف و توضیحات خود را اینجا بنویسید (مثلا: افزایش حجم خشک، کاهش سایز، آسیب زانو و...)" rows="3" style="margin-bottom: 15px; resize: vertical;"></textarea>
-            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="submitProgramRequest()">ثبت و ارسال درخواست</button>
-        </div>
-    </div>
-
-    <!-- مودال افزودن حرکت جدید -->
-    <div id="exercise-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('exercise-modal')">&times;</span>
-            <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;">افزودن حرکت ورزشی جدید</h3>
-            <input type="text" id="ex-name" placeholder="نام حرکت (مثلا: پرس سرشانه دمبل)" style="margin-bottom: 12px;">
-            <input type="text" id="ex-muscles" placeholder="عضلات درگیر (مثلا: دلتوئید، پشت بازو)" style="margin-bottom: 12px;">
-            <input type="text" id="ex-img" placeholder="لینک عکس یا گیف حرکت (آدرس تصویر)" style="margin-bottom: 12px;">
-            <textarea id="ex-desc" placeholder="توضیحات کوتاه یا نحوه اجرا..." rows="2" style="margin-bottom: 15px; resize: vertical;"></textarea>
-            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="saveNewExercise()">ذخیره حرکت در بانک</button>
-        </div>
-    </div>
-
-    <!-- مودال ورود ورزشکار -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('login-modal')">&times;</span>
-            <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;">ورود ورزشکار با حساب اختصاصی</h3>
-            <input type="text" id="athlete-phone-input" placeholder="شماره موبایل (نام کاربری)" maxlength="11" style="margin-bottom: 12px;">
-            <input type="password" id="athlete-pass-input" placeholder="رمز عبور" style="margin-bottom: 15px;">
-            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="verifyAthleteLogin()">ورود به پنل شاگرد</button>
-        </div>
-    </div>
-
-    <!-- مودال ورود مربی -->
-    <div id="admin-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('admin-modal')">&times;</span>
-            <h3 style="color: var(--primary); margin-bottom: 20px; text-align: center;">ورود به پنل مدیریت مربی</h3>
-            <input type="text" id="admin-user-input" placeholder="نام کاربری مربی" style="margin-bottom: 12px;">
-            <input type="password" id="admin-pass-input" placeholder="رمز عبور مربی" style="margin-bottom: 15px;">
-            <button class="btn btn-primary" style="width: 100%; padding: 15px;" onclick="verifyAdminLogin()">ورود به پنل مدیریت</button>
-        </div>
-    </div>
-
     <script>
-        let currentAthlete = null;
-
-        if (!localStorage.getItem('admin_credentials')) {
-            localStorage.setItem('admin_credentials', JSON.stringify({ user: 'admin', pass: '123456' }));
+        function openRegisterModal() {
+            document.getElementById('registerModal').style.display = 'flex';
         }
-
-        if (!localStorage.getItem('academy_students')) {
-            const defaultStudents = [
-                { id: 1, name: 'علی رضایی', phone: '09121111111', pass: '1234', status: 'پرداخت شده', program: 'برنامه چربی‌سوزی پیشرفته', logs: [{week: 'هفته اول', weight: 80, waist: 90}, {week: 'هفته دوم', weight: 78.5, waist: 88}] },
-                { id: 2, name: 'محمد امینی', phone: '09122222222', pass: '1234', status: 'باقی‌مانده', program: 'برنامه حجم خشک عضلانی', logs: [{week: 'هفته اول', weight: 70, waist: 80}] },
-                { id: 3, name: 'محمدرضا حق‌شناس', phone: '09162097340', pass: '1234', status: 'پرداخت شده', program: 'برنامه بدنسازی و جودو', logs: [{week: 'هفته اول', weight: 65.8, waist: 78}] }
-            ];
-            localStorage.setItem('academy_students', JSON.stringify(defaultStudents));
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
         }
-
-        if (!localStorage.getItem('exercise_library')) {
-            const defaultExercises = [
-                { id: 1, name: 'اسکوات با هالتر (Barbell Squat)', muscles: 'چهارسرران، سرینی، هم‌استرینگ', img: 'https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=600&auto=format&fit=crop', desc: 'حرکت مادر برای ساخت حجم و قدرت پایین‌تنه.' },
-                { id: 2, name: 'پرس بالاثینه دمبل (Incline Dumbbell Press)', muscles: 'سینه‌ای بزرگ (بالا)، دلتوئید جلو', img: 'https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?q=80&w=600&auto=format&fit=crop', desc: 'بسیار مناسب برای تفکیک بالای سینه.' },
-                { id: 3, name: 'بارفیکس دست باز (Pull-up)', muscles: 'لت (پشتی بزرگ)، بازوی کوچک', img: 'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop', desc: 'کلید اصلی پهنای بالاتنه و عضلات پشت.' }
-            ];
-            localStorage.setItem('exercise_library', JSON.stringify(defaultExercises));
-        }
-
-        window.onload = function() {
-            renderExerciseLibrary();
-        };
-
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
             toast.className = `toast ${type}`;
-            toast.innerHTML = `<span>${message}</span>`;
+            toast.innerHTML = `<span>${type === 'success' ? '✅' : '⚠️'}</span> ${message}`;
             container.appendChild(toast);
             setTimeout(() => { toast.remove(); }, 4000);
         }
-
         function goToHome() {
+            document.getElementById('public-view').style.display = 'block';
             document.getElementById('dashboard-section').style.display = 'none';
             document.getElementById('admin-section').style.display = 'none';
-            document.getElementById('public-view').style.display = 'block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
-
         function navigateTo(sectionId) {
-            document.getElementById('dashboard-section').style.display = 'none';
-            document.getElementById('admin-section').style.display = 'none';
-            document.getElementById('public-view').style.display = 'block';
-            setTimeout(() => {
-                const targetElement = document.getElementById(sectionId);
-                if (targetElement) { targetElement.scrollIntoView({ behavior: 'smooth' }); }
-            }, 50);
+            goToHome();
+            const element = document.getElementById(sectionId);
+            if(element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
         }
+        function registerNewAthlete() {
+            const name = document.getElementById('reg-name').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const pass = document.getElementById('reg-pass').value.trim();
 
-        function openProgramModal(type) {
-            document.getElementById('modal-title').innerText = 'فرم درخواست برنامه ' + type;
-            document.getElementById('program-modal').style.display = 'flex';
-        }
-
-        function openAddExerciseModal() { document.getElementById('exercise-modal').style.display = 'flex'; }
-        function openLoginModal() { document.getElementById('login-modal').style.display = 'flex'; }
-        function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; }
-        function closeModal(modalId) { document.getElementById(modalId).style.display = 'none'; }
-
-        function toggleNotificationDropdown() {
-            const dropdown = document.getElementById('notif-dropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function renderExerciseLibrary() {
-            const exercises = JSON.parse(localStorage.getItem('exercise_library'));
-            const container = document.getElementById('exercise-container');
-            container.innerHTML = '';
-
-            exercises.forEach(ex => {
-                const card = document.createElement('div');
-                card.className = 'exercise-card';
-                card.innerHTML = `
-                    <div class="exercise-img">
-                        ${ex.img ? `<img src="${ex.img}" alt="${ex.name}">` : 'بدون تصویر'}
-                    </div>
-                    <div class="exercise-body">
-                        <h3>${ex.name}</h3>
-                        <p><b>عضلات درگیر:</b> ${ex.muscles}</p>
-                        <p style="font-size: 0.85rem;">${ex.desc || ''}</p>
-                        <button class="btn btn-danger" style="padding: 5px 12px; font-size: 0.78rem; margin-top: 10px;" onclick="deleteExercise(${ex.id})">حذف حرکت</button>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        }
-
-        function saveNewExercise() {
-            const name = document.getElementById('ex-name').value;
-            const muscles = document.getElementById('ex-muscles').value;
-            const img = document.getElementById('ex-img').value;
-            const desc = document.getElementById('ex-desc').value;
-
-            if(!name || !muscles) {
-                showToast('لطفاً نام حرکت و عضلات درگیر را وارد کنید.', 'error');
+            if(!name || !phone || !pass) {
+                showToast('لطفاً تمامی فیلدها را به دقت پر کنید.', 'error');
                 return;
             }
 
-            let exercises = JSON.parse(localStorage.getItem('exercise_library'));
-            exercises.push({ id: Date.now(), name, muscles, img, desc });
-            localStorage.setItem('exercise_library', JSON.stringify(exercises));
-
-            closeModal('exercise-modal');
-            renderExerciseLibrary();
-            showToast('حرکت جدید با موفقیت به بانک افزوده شد.', 'success');
-
-            document.getElementById('ex-name').value = '';
-            document.getElementById('ex-muscles').value = '';
-            document.getElementById('ex-img').value = '';
-            document.getElementById('ex-desc').value = '';
-        }
-
-        function deleteExercise(id) {
-            if(confirm('آیا از حذف این حرکت مطمئن هستید؟')) {
-                let exercises = JSON.parse(localStorage.getItem('exercise_library'));
-                exercises = exercises.filter(e => e.id !== id);
-                localStorage.setItem('exercise_library', JSON.stringify(exercises));
-                renderExerciseLibrary();
-                showToast('حرکت مورد نظر حذف شد.', 'success');
-            }
-        }
-
-        function submitProgramRequest() {
-            const name = document.getElementById('p-name').value;
-            const phone = document.getElementById('p-phone').value;
-            const goalText = document.getElementById('p-goal-text').value;
-
-            if(!name || phone.length !== 11) {
-                showToast('لطفاً نام و شماره موبایل ۱۱ رقمی معتبر وارد کنید.', 'error');
+            let students = JSON.parse(localStorage.getItem('academy_students')) || [];
+            if(students.some(s => s.phone === phone)) {
+                showToast('این شماره تماس قبلاً در سیستم ثبت‌نام کرده است.', 'error');
                 return;
             }
 
-            let students = JSON.parse(localStorage.getItem('academy_students'));
-            students.push({ id: Date.now(), name, phone, pass: '1234', status: 'باقی‌مانده', program: goalText || 'برنامه اختصاصی', logs: [] });
+            students.push({ name, phone, pass, status: 'باقی‌مانده' });
             localStorage.setItem('academy_students', JSON.stringify(students));
-
-            closeModal('program-modal');
-            showToast('درخواست برنامه شما ثبت شد و استاد بررسی خواهد کرد!', 'success');
-            document.getElementById('p-name').value = '';
-            document.getElementById('p-phone').value = '';
-            document.getElementById('p-goal-text').value = '';
-            renderAdminStudentsTable();
-        }
-
-        function verifyAdminLogin() {
-            const u = document.getElementById('admin-user-input').value;
-            const p = document.getElementById('admin-pass-input').value;
-            const adminData = JSON.parse(localStorage.getItem('admin_credentials'));
-
-            if(u === adminData.user && p === adminData.pass) {
-                closeModal('admin-modal');
-                document.getElementById('public-view').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'none';
-                document.getElementById('admin-section').style.display = 'block';
-                renderAdminStudentsTable();
-                showToast('با موفقیت وارد پنل مدیریت شدید.', 'success');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                showToast('خطا: نام کاربری یا رمز عبور مربی اشتباه است!', 'error');
-            }
-        }
-
-        function updateAdminCredentials() {
-            const newUser = document.getElementById('new-admin-user').value;
-            const newPass = document.getElementById('new-admin-pass').value;
-
-            if(!newUser || !newPass) {
-                showToast('لطفاً فیلدها را پر کنید.', 'error');
-                return;
-            }
-
-            localStorage.setItem('admin_credentials', JSON.stringify({ user: newUser, pass: newPass }));
-            showToast('اطلاعات ورود مربی با موفقیت تغییر کرد.', 'success');
-            document.getElementById('new-admin-user').value = '';
-            document.getElementById('new-admin-pass').value = '';
-        }
-
-        function addNewStudentAccount() {
-            const name = document.getElementById('new-s-name').value;
-            const phone = document.getElementById('new-s-phone').value;
-            const pass = document.getElementById('new-s-pass').value;
-            const status = document.getElementById('new-s-status').value;
-
-            if(!name || phone.length !== 11 || !pass) {
-                showToast('لطفاً اطلاعات را کامل و شماره ۱۱ رقمی وارد کنید.', 'error');
-                return;
-            }
-
-            let students = JSON.parse(localStorage.getItem('academy_students'));
-            students.push({ id: Date.now(), name, phone, pass, status, program: 'برنامه اختصاصی مربی', logs: [] });
-            localStorage.setItem('academy_students', JSON.stringify(students));
-
-            showToast('حساب کاربری شاگرد با موفقیت ساخته شد.', 'success');
-            document.getElementById('new-s-name').value = '';
-            document.getElementById('new-s-phone').value = '';
-            document.getElementById('new-s-pass').value = '';
-            renderAdminStudentsTable();
-        }
-
-        function renderAdminStudentsTable(filterText = '') {
-            const students = JSON.parse(localStorage.getItem('academy_students'));
-            const tbody = document.getElementById('students-table-body');
-            tbody.innerHTML = '';
-
-            const filtered = students.filter(s => s.name.includes(filterText) || s.phone.includes(filterText));
-
-            if(filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">هیچ شاگردی یافت نشد.</td></tr>`;
-                return;
-            }
-
-            filtered.forEach(student => {
-                const badgeClass = student.status === 'پرداخت شده' ? 'paid' : 'pending';
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td><b>${student.name}</b></td>
-                    <td>${student.phone}</td>
-                    <td><code>${student.pass}</code></td>
-                    <td><span class="badge ${badgeClass}" onclick="toggleStudentStatus(${student.id})" style="cursor: pointer;" title="کلیک برای تغییر وضعیت">${student.status} 🔄</span></td>
-                    <td>
-                        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                            <button class="btn btn-outline" style="padding: 5px 12px; font-size: 0.8rem;" onclick="editStudentProgram(${student.id})">ویرایش برنامه</button>
-                            <button class="btn btn-danger" style="padding: 5px 12px; font-size: 0.8rem;" onclick="deleteStudent(${student.id})">حذف</button>
-                        </div>
-                    </td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        function filterStudentsTable() {
-            const query = document.getElementById('search-student-input').value;
-            renderAdminStudentsTable(query);
-        }
-
-        function toggleStudentStatus(id) {
-            let students = JSON.parse(localStorage.getItem('academy_students'));
-            students = students.map(s => {
-                if(s.id === id) { s.status = s.status === 'پرداخت شده' ? 'باقی‌مانده' : 'پرداخت شده'; }
-                return s;
-            });
-            localStorage.setItem('academy_students', JSON.stringify(students));
-            renderAdminStudentsTable();
-            showToast('وضعیت شهریه بروزرسانی شد.', 'success');
-        }
-
-        function editStudentProgram(id) {
-            let students = JSON.parse(localStorage.getItem('academy_students'));
-            const student = students.find(s => s.id === id);
-            const newProg = prompt(`ویرایش توضیحات/برنامه تمرینی برای ${student.name}:`, student.program);
-            if(newProg !== null) {
-                student.program = newProg;
-                localStorage.setItem('academy_students', JSON.stringify(students));
-                showToast('برنامه شاگرد بروز شد.', 'success');
-                renderAdminStudentsTable();
-            }
-        }
-
-        function deleteStudent(id) {
-            if(confirm('آیا از حذف این شاگرد اطمینان دارید؟')) {
-                let students = JSON.parse(localStorage.getItem('academy_students'));
-                students = students.filter(s => s.id !== id);
-                localStorage.setItem('academy_students', JSON.stringify(students));
-                renderAdminStudentsTable();
-                showToast('حساب شاگرد حذف شد.', 'success');
-            }
-        }
-
-        function verifyAthleteLogin() {
-            const phone = document.getElementById('athlete-phone-input').value;
-            const pass = document.getElementById('athlete-pass-input').value;
-            const students = JSON.parse(localStorage.getItem('academy_students'));
-
-            const student = students.find(s => s.phone === phone && s.pass === pass);
-
-            if(student) {
-                currentAthlete = student;
-                closeModal('login-modal');
-                document.getElementById('public-view').style.display = 'none';
-                document.getElementById('admin-section').style.display = 'none';
-                document.getElementById('dashboard-section').style.display = 'block';
-                document.getElementById('welcome-user').innerText = `خوش آمدید، ${student.name} عزیز`;
-                document.getElementById('user-days-left').innerText = `وضعیت شهریه: ${student.status}`;
-                document.getElementById('user-program-desc').innerText = `درخواست / هدف ثبت شده شما: ${student.program}`;
-                
-                renderStudentChart();
-                showToast(`خوش آمدید ${student.name}`, 'success');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                showToast('خطا: شماره تماس یا رمز عبور اشتباه است!', 'error');
-            }
-        }
-
-        function saveStudentLog() {
-            const week = document.getElementById('log-week').value;
-            const weight = parseFloat(document.getElementById('log-weight').value);
-            const waist = parseFloat(document.getElementById('log-waist').value);
-
-            if(!week || !weight) {
-                showToast('لطفاً عنوان هفته و وزن خود را وارد کنید.', 'error');
-                return;
-            }
-
-            if(!currentAthlete.logs) { currentAthlete.logs = []; }
-            currentAthlete.logs.push({ week, weight, waist });
-
-            let students = JSON.parse(localStorage.getItem('academy_students'));
-            students = students.map(s => s.id === currentAthlete.id ? currentAthlete : s);
-            localStorage.setItem('academy_students', JSON.stringify(students));
-
-            document.getElementById('log-week').value = '';
-            document.getElementById('log-weight').value = '';
-            document.getElementById('log-waist').value = '';
-
-            renderStudentChart();
-            showToast('اطلاعات پیشرفت با موفقیت ثبت شد.', 'success');
-        }
-
-        function renderStudentChart() {
-            const container = document.getElementById('chart-container');
-            const labelsContainer = document.getElementById('chart-labels');
-            container.innerHTML = '';
-            labelsContainer.innerHTML = '';
-
-            if(!currentAthlete.logs || currentAthlete.logs.length === 0) {
-                container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem; margin: auto;">هنوز سابقه وزنی ثبت نکرده‌اید.</p>`;
-                return;
-            }
-
-            const weights = currentAthlete.logs.map(l => l.weight);
-            const minW = Math.min(...weights) - 2;
-            const maxW = Math.max(...weights) + 2;
-
-            currentAthlete.logs.forEach(log => {
-                let heightPercent = ((log.weight - minW) / (maxW - minW || 1)) * 100;
-                if(heightPercent < 20) heightPercent = 20;
-                if(heightPercent > 95) heightPercent = 95;
-
-                const bar = document.createElement('div');
-                bar.style.display = 'flex';
-                bar.style.flexDirection = 'column';
-                bar.style.alignItems = 'center';
-                bar.style.height = '100%';
-                bar.style.justifyContent.flexEnd = 'flex-end';
-                bar.style.justifyContent = 'flex-end';
-                bar.style.flex = '1';
-
-                bar.innerHTML = `
-                    <span style="font-size: 0.75rem; color: var(--primary); margin-bottom: 5px; font-weight: 700;">${log.weight}kg</span>
-                    <div style="width: 26px; height: ${heightPercent}%; background: linear-gradient(to top, var(--primary), #22c55e); border-radius: 8px 8px 0 0; box-shadow: 0 0 15px rgba(56,189,248,0.5);"></div>
-                `;
-                container.appendChild(bar);
-
-                const lbl = document.createElement('span');
-                lbl.innerText = log.week;
-                labelsContainer.appendChild(lbl);
-            });
-        }
-
-        function calculateBMI() {
-            const w = parseFloat(document.getElementById('weight').value);
-            const h = parseFloat(document.getElementById('height').value) / 100;
-            const age = parseInt(document.getElementById('age').value);
-            const gender = document.getElementById('gender').value;
-            const activity = parseFloat(document.getElementById('activity').value);
-
-            if(!w || !h || !age) {
-                showToast('لطفاً وزن، قد و سن خود را برای محاسبه وارد کنید.', 'error');
-                return;
-            }
-
-            const bmi = (w / (h * h)).toFixed(1);
-            let status = '';
-            let pointerPos = 0;
-
-            if(bmi < 18.5) {
-                status = 'کم‌وزن (لاغر)';
-                pointerPos = 15;
-            } else if(bmi >= 18.5 && bmi < 25) {
-                status = 'وزن نرمال و ایده‌آل عالی 👍';
-                pointerPos = 40;
-            } else if(bmi >= 25 && bmi < 30) {
-                status = 'اضافه وزن';
-                pointerPos = 70;
-            } else {
-                status = 'چاقی (نیاز به برنامه جدی)';
-                pointerPos = 90;
-            }
-
-            let bmr = (gender === 'male') ? (10 * w) + (6.25 * (h * 100)) - (5 * age) + 5 : (10 * w) + (6.25 * (h * 100)) - (5 * age) - 161;
-            let tdee = Math.round(bmr * activity);
-
-            document.getElementById('bmi-result').style.display = 'block';
-            document.getElementById('bmi-text').innerHTML = `شاخص BMI شما: <b>${bmi}</b> (${status})<br>کالری مورد نیاز روزانه برای تثبیت وزن: <b>${tdee} کیلوکالری</b>`;
-            document.getElementById('bmi-pointer').style.left = pointerPos + '%';
-            showToast('محاسبه با موفقیت انجام شد.', 'success');
+            
+            closeModal('registerModal');
+            showToast('ثبت‌نام شما با موفقیت انجام شد! اکنون می‌توانید وارد پنل خود شوید.', 'success');
         }
     </script>
 </body>
