@@ -1,0 +1,12 @@
+{
+  "name": "academy-athlete-system",
+  "version": "1.0.0",
+  "description": "Academy Athlete Management System with Supabase",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  }
+}
