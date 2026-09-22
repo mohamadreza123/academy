@@ -238,11 +238,12 @@
             font-size: 0.98rem;
             color: var(--text-muted);
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
+            text-align: right;
         }
 
-        .coach-info li b { color: #fff; }
+        .coach-info li b { color: #fff; white-space: nowrap; }
 
         .hero {
             text-align: center;
@@ -631,10 +632,10 @@
                     </div>
                     <div class="coach-info">
                         <h3 style="color: var(--primary); font-size: 1.6rem; margin-bottom: 10px;">استاد فرید آقادادی</h3>
-                        <p style="color: var(--text-muted); margin-bottom: 15px;">ارشد آسیب‌شناسی و بازتوانی ورزشی با بیش از دو دهه تجربه تخصصی در ورزش حرفه‌ای.</p>
+                        <p style="color: var(--text-muted); margin-bottom: 15px;">ارشد آسیب‌شناسی و بازتوانی ورزشی با ۱۲ سال سابقه تخصصی در ورزش حرفه‌ای.</p>
                         <ul>
                             <li>🎓 <b>سوابق تحصیلی:</b> کارشناس ارشد آسیب‌شناسی و بازتوانی ورزشی</li>
-                            <li>⏳ <b>تجربه ورزشی:</b> دارای ۲۰ سال سابقه حرفه‌ای بدنسازی و بازتوانی</li>
+                            <li>⏳ <b>تجربه ورزشی:</b> دارای ۱۲ سال سابقه حرفه‌ای بدنسازی و بازتوانی</li>
                             <li>⚽ <b>سوابق مربیگری:</b> مربی بدنساز تیم‌های امید سپاهان و تیم رعد پدافند</li>
                             <li>🥇 <b>افتخارات:</b> پرورش و تربیت شاگردان ملی‌پوش در رشته‌های مختلف ورزشی</li>
                             <li>📍 <b>آدرس باشگاه:</b> خیابان رکن‌الدوله شرقی، حدفاصل اتوبان و خیابان نیرو، ساختمان پانژه، اولین درب سمت چپ، زنگ ۱</li>
@@ -676,7 +677,7 @@
                 </div>
             </section>
 
-            <!-- بانک حرکات ورزشی با قابلیت مدیریت و افزودن عکس -->
+            <!-- بانک حرکات ورزشی با قابلیت مدیریت و آپلود عکس -->
             <section id="exercise-library">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 15px;">
                     <h2 style="margin: 0; border: none; padding: 0;">بانک حرکات ورزشی تخصصی</h2>
@@ -740,7 +741,21 @@
                 <div class="exercise-card" style="padding: 25px; margin-top: 20px;">
                     <p>وضعیت اشتراک: <b style="color: var(--primary);" id="user-days-left">فعال</b></p>
                     <p style="margin-top: 10px; color: var(--text-muted);" id="user-program-desc">برنامه تمرینی اختصاصی شما بارگذاری شده است.</p>
-                    <button class="btn btn-primary" style="margin-top: 15px;" onclick="showToast('فایل PDF برنامه دانلود شد.', 'success')">📥 دانلود برنامه جدید (PDF)</button>
+                    
+                    <div style="margin-top: 20px; border-top: 1px solid var(--card-border); padding-top: 15px;" id="student-file-download-area">
+                        <h4 style="color: var(--primary); font-size: 1rem; margin-bottom: 10px;">📥 فایل یا عکس برنامه تمرینی شما از طرف مربی:</h4>
+                        <div id="student-download-box">
+                            <p style="color: var(--text-muted); font-size: 0.9rem;">هنوز فایلی بارگذاری نشده است.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- باکس ارتباط با مربی / گزارش ضعف و وضعیت -->
+                <div class="exercise-card" style="padding: 25px; margin-top: 30px;">
+                    <h3>💬 ارتباط با استاد فرید آقادادی (ارسال گزارش ضعف و سوال)</h3>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 15px;">نکات، سوالات یا نقاط ضعف تمرینی خود را برای مربی بنویسید:</p>
+                    <textarea id="student-message-input" rows="4" placeholder="مثلا: احساس خستگی در عضلات پشت پا دارم یا در حرکت اسکوات ضعف دارم..." style="width: 100%; padding: 15px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--card-border); border-radius: 14px; color: #fff; font-size: 1rem; outline: none; margin-bottom: 15px;"></textarea>
+                    <button class="btn btn-primary" onclick="sendStudentMessageToCoach()">ارسال پیام برای مربی</button>
                 </div>
 
                 <div class="exercise-card" style="padding: 25px; margin-top: 30px;">
@@ -774,7 +789,7 @@
                         <div style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; font-weight: 900; color: #070b19; font-size: 1.2rem;">ف</div>
                         <div>
                             <h2 style="margin: 0; border: none; padding: 0;">پنل مدیریت استاد فرید آقادادی</h2>
-                            <p style="color: var(--text-muted); font-size: 0.88rem;">مدیریت کامل شاگردان و تنظیمات اکانت</p>
+                            <p style="color: var(--text-muted); font-size: 0.88rem;">مدیریت کامل شاگردان، بررسی پیام‌ها و آپلود برنامه‌ها</p>
                         </div>
                     </div>
                     <button class="btn btn-outline" onclick="goToHome()">🚪 خروج از پنل مدیریت</button>
@@ -803,9 +818,18 @@
                     <button class="btn btn-primary" onclick="addNewStudentAccount()">ایجاد حساب شاگرد</button>
                 </div>
 
+                <!-- بخش بررسی پیام‌ها و گزارش‌های ارسالی شاگردان -->
+                <div class="exercise-card" style="padding: 25px; margin-bottom: 30px;">
+                    <h3>📨 صندوق پیام‌ها و گزارش ضعف‌های ارسالی ورزشکاران</h3>
+                    <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 15px;">پیام‌ها و نکات ارسالی از طرف شاگردان:</p>
+                    <div id="coach-messages-box" style="display: flex; flex-direction: column; gap: 12px; max-height: 250px; overflow-y: auto;">
+                        <p style="color: var(--text-muted); font-size: 0.9rem;">هیچ پیامی ثبت نشده است.</p>
+                    </div>
+                </div>
+
                 <div class="exercise-card" style="padding: 25px; margin-bottom: 30px;">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 15px;">
-                        <h3 style="margin: 0;">لیست و مدیریت شاگردان آکادمی</h3>
+                        <h3 style="margin: 0;">لیست و مدیریت شاگردان و آپلود فایل تمرینی</h3>
                         <input type="text" id="search-student-input" placeholder="🔍 جستجوی سریع شاگرد..." onkeyup="filterStudentsTable()" style="max-width: 320px; padding: 12px; background: rgba(255,255,255,0.04); border: 1px solid var(--card-border); border-radius: 10px; color: #fff; font-size: 0.9rem; outline: none;">
                     </div>
                     <div class="admin-table-container">
@@ -813,10 +837,11 @@
                             <thead>
                                 <tr>
                                     <th>نام شاگرد</th>
-                                    <th>شماره تماس (نام کاربری)</th>
+                                    <th>شماره تماس</th>
                                     <th>رمز عبور</th>
                                     <th>وضعیت شهریه</th>
-                                    <th>عملیات مدیریت</th>
+                                    <th>آپلود برنامه اختصاصی</th>
+                                    <th>عملیات</th>
                                 </tr>
                             </thead>
                             <tbody id="students-table-body">
@@ -828,53 +853,59 @@
         </div>
     </main>
 
-    <!-- مودال ثبت‌نام مستقل ورزشکار -->
-    <div class="modal" id="registerModal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="closeModal('registerModal')">&times;</span>
-            <h3 style="color: var(--primary); margin-bottom: 20px;">📝 ثبت‌نام مستقل ورزشکار</h3>
-            <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">اطلاعات خود را وارد کنید تا حساب کاربری شما در آکادمی ساخته شود:</p>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <input type="text" id="reg-name" placeholder="نام و نام خانوادگی">
-                <input type="text" id="reg-phone" placeholder="شماره تماس (به عنوان نام کاربری)" maxlength="11">
-                <input type="password" id="reg-pass" placeholder="رمز عبور دلخواه">
-                <button class="btn btn-primary" style="margin-top: 10px; padding: 14px;" onclick="registerNewAthlete()">تایید و ایجاد حساب</button>
-            </div>
+    <!-- مودال‌ها -->
+    <div id="general-modal" class="modal">
+        <div class="modal-content" id="modal-body-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div id="dynamic-modal-inner"></div>
         </div>
     </div>
 
     <footer>
         <div class="footer-grid">
             <div class="footer-col">
-                <h3>آکادمی تناسب اندام استاد آقادادی</h3>
-                <p>مجموعه تخصصی بدنسازی، فیتنس و آسیب‌شناسی ورزشی.</p>
-                <p><b>تلفن تماس:</b> 09134081300</p>
+                <h3>آکادمی استاد فرید آقادادی</h3>
+                <p>ارائه سیستم‌های تخصصی تمرین، بازتوانی و اصلاح حرکتی زیر نظر کادری مجرب و حرفه‌ای.</p>
             </div>
             <div class="footer-col">
                 <h3>دسترسی سریع</h3>
-                <a onclick="goToHome()">صفحه اصلی سایت</a>
-                <a onclick="navigateTo('coach-section')">درباره استاد فرید آقادادی</a>
-                <a onclick="navigateTo('schedule')">جدول سانس‌های تمرینی</a>
+                <a onclick="goToHome()">صفحه اصلی</a>
+                <a onclick="navigateTo('coach-section')">درباره مربی</a>
+                <a onclick="navigateTo('schedule')">سانس‌های باشگاه</a>
                 <a onclick="navigateTo('exercise-library')">بانک حرکات ورزشی</a>
             </div>
             <div class="footer-col">
                 <h3>ارتباط با ما</h3>
-                <p><b>آدرس:</b> اصفهان، خیابان رکن‌الدوله شرقی، ساختمان پانژه</p>
-                <p>جهت هماهنگی حضور در باشگاه با شماره تماس مستقیم آکادمی در ارتباط باشید.</p>
+                <p>تلفن: 09134081300</p>
+                <p>اصفهان، خیابان رکن‌الدوله شرقی</p>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>کلیه حقوق این سامانه متعلق به آکادمی تخصصی تناسب اندام استاد فرید آقادادی می‌باشد.</p>
+            <p>تمامی حقوق این سامانه متعلق به آکادمی تناسب اندام استاد فرید آقادادی می‌باشد.</p>
         </div>
     </footer>
 
     <script>
-        function openRegisterModal() {
-            document.getElementById('registerModal').style.display = 'flex';
+        let adminData = JSON.parse(localStorage.getItem('admin_cred')) || { user: 'admin', pass: '1234' };
+        let students = JSON.parse(localStorage.getItem('academy_students')) || [
+            { name: 'محمد حق‌شناس', phone: '09120000000', pass: '123456', status: 'پرداخت شده', fileData: null, fileName: null, message: '' }
+        ];
+        let exercises = JSON.parse(localStorage.getItem('academy_exercises')) || [
+            { title: 'پرس سینه هالتر', muscle: 'سینه و پشت بازو', desc: 'اجرای کنترل شده و پایین آوردن تا روی استخوان جناغ سینه.', img: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=600&auto=format&fit=crop' },
+            { title: 'اسکات دمبل یا هالتر', muscle: 'پایین تنه و چهارسر ران', desc: 'حفظ قوس طبیعی کمر و فشار روی عضلات چهارسر و سرینی.', img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop' }
+        ];
+        let studentLogs = JSON.parse(localStorage.getItem('student_logs')) || [
+            { week: 'هفته اول', weight: 66.0, waist: 80 }
+        ];
+        let currentLoggedInStudent = null;
+
+        function saveData() {
+            localStorage.setItem('admin_cred', JSON.stringify(adminData));
+            localStorage.setItem('academy_students', JSON.stringify(students));
+            localStorage.setItem('academy_exercises', JSON.stringify(exercises));
+            localStorage.setItem('student_logs', JSON.stringify(studentLogs));
         }
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
+
         function showToast(message, type = 'success') {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -883,41 +914,390 @@
             container.appendChild(toast);
             setTimeout(() => { toast.remove(); }, 4000);
         }
+
         function goToHome() {
+            document.getElementById('home').style.display = 'block';
             document.getElementById('public-view').style.display = 'block';
             document.getElementById('dashboard-section').style.display = 'none';
             document.getElementById('admin-section').style.display = 'none';
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
         function navigateTo(sectionId) {
             goToHome();
-            const element = document.getElementById(sectionId);
-            if(element) {
-                element.scrollIntoView({ behavior: 'smooth' });
+            setTimeout(() => {
+                const el = document.getElementById(sectionId);
+                if(el) el.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+        }
+
+        function openModal() { document.getElementById('general-modal').style.display = 'flex'; }
+        function closeModal() { document.getElementById('general-modal').style.display = 'none'; }
+
+        function openAdminModal() {
+            document.getElementById('dynamic-modal-inner').innerHTML = `
+                <h3 style="color: var(--primary); margin-bottom: 20px;">🔐 ورود مدیریت (مربی)</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <input type="text" id="adm-u" placeholder="نام کاربری مربی">
+                    <input type="password" id="adm-p" placeholder="رمز عبور مربی">
+                    <button class="btn btn-primary" onclick="loginAdmin()">تایید و ورود</button>
+                </div>
+            `;
+            openModal();
+        }
+
+        function loginAdmin() {
+            const u = document.getElementById('adm-u').value.trim();
+            const p = document.getElementById('adm-p').value.trim();
+            if(u === adminData.user && p === adminData.pass) {
+                closeModal();
+                showToast('با موفقیت وارد پنل مدیریت شدید.', 'success');
+                document.getElementById('home').style.display = 'block';
+                document.getElementById('public-view').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'none';
+                document.getElementById('admin-section').style.display = 'block';
+                renderAdminStudentsTable();
+                renderCoachMessages();
+            } else {
+                showToast('نام کاربری یا رمز عبور مربی اشتباه است.', 'error');
             }
         }
-        function registerNewAthlete() {
+
+        function openLoginModal() {
+            document.getElementById('dynamic-modal-inner').innerHTML = `
+                <h3 style="color: var(--primary); margin-bottom: 20px;">👤 ورود ورزشکار به پنل اختصاصی</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <input type="text" id="stu-phone" placeholder="شماره تماس (نام کاربری)">
+                    <input type="password" id="stu-pass" placeholder="رمز عبور">
+                    <button class="btn btn-primary" onclick="loginStudent()">ورود به پنل</button>
+                </div>
+            `;
+            openModal();
+        }
+
+        function loginStudent() {
+            const phone = document.getElementById('stu-phone').value.trim();
+            const pass = document.getElementById('stu-pass').value.trim();
+            const found = students.find(s => s.phone === phone && s.pass === pass);
+            if(found) {
+                currentLoggedInStudent = found;
+                closeModal();
+                showToast(`خوش آمدید، ${found.name}`, 'success');
+                document.getElementById('home').style.display = 'block';
+                document.getElementById('public-view').style.display = 'none';
+                document.getElementById('admin-section').style.display = 'none';
+                document.getElementById('dashboard-section').style.display = 'block';
+                document.getElementById('welcome-user').innerText = `ورزشکار گرامی: ${found.name}`;
+                document.getElementById('user-days-left').innerText = found.status === 'پرداخت شده' ? 'اشتراک فعال و شهریه تسویه' : 'نیازمند تسویه شهریه';
+                
+                const dlBox = document.getElementById('student-download-box');
+                if(found.fileData) {
+                    dlBox.innerHTML = `
+                        <p style="color: #fff; margin-bottom: 10px;">📄 نام فایل: <b>${found.fileName}</b></p>
+                        <a href="${found.fileData}" download="${found.fileName}" class="btn btn-primary">📥 دانلود فایل / عکس برنامه</a>
+                    `;
+                } else {
+                    dlBox.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">هنوز فایلی توسط مربی برای شما بارگذاری نشده است.</p>`;
+                }
+
+                document.getElementById('student-message-input').value = found.message || '';
+
+                renderStudentChart();
+            } else {
+                showToast('اطلاعات ورود شاگرد یافت نشد یا اشتباه است.', 'error');
+            }
+        }
+
+        function sendStudentMessageToCoach() {
+            if(!currentLoggedInStudent) return;
+            const msg = document.getElementById('student-message-input').value.trim();
+            currentLoggedInStudent.message = msg;
+            
+            const index = students.findIndex(s => s.phone === currentLoggedInStudent.phone);
+            if(index !== -1) {
+                students[index].message = msg;
+            }
+            saveData();
+            showToast('پیام شما با موفقیت برای استاد فرید ارسال شد.', 'success');
+        }
+
+        function renderCoachMessages() {
+            const container = document.getElementById('coach-messages-box');
+            const activeMessages = students.filter(s => s.message && s.message.trim() !== '');
+            if(activeMessages.length === 0) {
+                container.innerHTML = `<p style="color: var(--text-muted); font-size: 0.9rem;">هنوز پیامی از طرف شاگردان ثبت نشده است.</p>`;
+                return;
+            }
+            container.innerHTML = activeMessages.map(s => `
+                <div style="background: rgba(56, 189, 248, 0.05); border: 1px solid var(--card-border); padding: 15px; border-radius: 12px;">
+                    <p style="color: var(--primary); font-weight: 700; margin-bottom: 5px;">👤 ${s.name} (${s.phone}):</p>
+                    <p style="color: #fff; font-size: 0.95rem;">${s.message}</p>
+                </div>
+            `).join('');
+        }
+
+        function openRegisterModal() {
+            document.getElementById('dynamic-modal-inner').innerHTML = `
+                <h3 style="color: var(--primary); margin-bottom: 20px;">📝 درخواست ثبت‌نام در آکادمی</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <input type="text" id="reg-name" placeholder="نام و نام خانوادگی">
+                    <input type="text" id="reg-phone" placeholder="شماره تماس (۱۱ رقمی)" maxlength="11">
+                    <textarea id="reg-desc" placeholder="توضیحات یا هدف تمرینی شما..." rows="3"></textarea>
+                    <button class="btn btn-primary" onclick="submitRegistration()">ارسال درخواست به مربی</button>
+                </div>
+            `;
+            openModal();
+        }
+
+        function submitRegistration() {
             const name = document.getElementById('reg-name').value.trim();
             const phone = document.getElementById('reg-phone').value.trim();
-            const pass = document.getElementById('reg-pass').value.trim();
-
-            if(!name || !phone || !pass) {
-                showToast('لطفاً تمامی فیلدها را به دقت پر کنید.', 'error');
+            if(!name || phone.length < 10) {
+                showToast('لطفا اطلاعات را به درستی وارد کنید.', 'error');
                 return;
             }
-
-            let students = JSON.parse(localStorage.getItem('academy_students')) || [];
-            if(students.some(s => s.phone === phone)) {
-                showToast('این شماره تماس قبلاً در سیستم ثبت‌نام کرده است.', 'error');
-                return;
-            }
-
-            students.push({ name, phone, pass, status: 'باقی‌مانده' });
-            localStorage.setItem('academy_students', JSON.stringify(students));
-            
-            closeModal('registerModal');
-            showToast('ثبت‌نام شما با موفقیت انجام شد! اکنون می‌توانید وارد پنل خود شوید.', 'success');
+            students.push({ name, phone, pass: '123456', status: 'باقی‌مانده', fileData: null, fileName: null, message: '' });
+            saveData();
+            closeModal();
+            showToast('درخواست ثبت‌نام شما ثبت شد. مربی حساب شما را فعال خواهد کرد.', 'success');
         }
+
+        function openProgramModal(type) {
+            showToast(`فرم درخواست برنامه ${type} باز شد. با شماره مربی 09134081300 در تماس باشید.`, 'success');
+        }
+
+        function renderExercises() {
+            const container = document.getElementById('exercise-container');
+            container.innerHTML = exercises.map((ex, index) => `
+                <div class="exercise-card">
+                    <div class="exercise-img">
+                        <img src="${ex.img}" alt="${ex.title}" onerror="this.src='https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop'">
+                    </div>
+                    <div class="exercise-body">
+                        <h3>${ex.title}</h3>
+                        <p><b>عضلات درگیر:</b> ${ex.muscle}</p>
+                        <p>${ex.desc}</p>
+                        <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem; margin-top: 10px;" onclick="deleteExercise(${index})">حذف حرکت</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function openAddExerciseModal() {
+            document.getElementById('dynamic-modal-inner').innerHTML = `
+                <h3 style="color: var(--primary); margin-bottom: 20px;">➕ افزودن حرکت ورزشی جدید</h3>
+                <div style="display: flex; flex-direction: column; gap: 15px;">
+                    <input type="text" id="ex-title" placeholder="نام حرکت (مثلا: پرس بالا سینه)">
+                    <input type="text" id="ex-muscle" placeholder="عضلات درگیر (مثلا: سینه بالا)">
+                    <label style="font-size:0.85rem; color:var(--text-muted);">انتخاب عکس حرکت از سیستم:</label>
+                    <input type="file" id="ex-file" accept="image/*" style="padding: 10px; background: rgba(255,255,255,0.04); border-radius: 10px;">
+                    <textarea id="ex-desc" placeholder="توضیحات اجرا..." rows="3"></textarea>
+                    <button class="btn btn-primary" onclick="addNewExercise()">ذخیره حرکت</button>
+                </div>
+            `;
+            openModal();
+        }
+
+        function addNewExercise() {
+            const title = document.getElementById('ex-title').value.trim();
+            const muscle = document.getElementById('ex-muscle').value.trim();
+            const desc = document.getElementById('ex-desc').value.trim();
+            const fileInput = document.getElementById('ex-file');
+
+            if(!title) {
+                showToast('عنوان حرکت الزامی است.', 'error');
+                return;
+            }
+
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    exercises.push({ title, muscle, desc, img: e.target.result });
+                    saveData();
+                    renderExercises();
+                    closeModal();
+                    showToast('حرکت جدید با عکس آپلود شده اضافه شد.', 'success');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                exercises.push({ title, muscle, desc, img: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop' });
+                saveData();
+                renderExercises();
+                closeModal();
+                showToast('حرکت جدید با موفقیت اضافه شد.', 'success');
+            }
+        }
+
+        function deleteExercise(index) {
+            exercises.splice(index, 1);
+            saveData();
+            renderExercises();
+            showToast('حرکت مورد نظر حذف شد.', 'success');
+        }
+
+        function calculateBMI() {
+            const w = parseFloat(document.getElementById('weight').value);
+            const h = parseFloat(document.getElementById('height').value);
+            const age = parseFloat(document.getElementById('age').value);
+            const gender = document.getElementById('gender').value;
+            const activity = parseFloat(document.getElementById('activity').value);
+
+            if(!w || !h || !age) {
+                showToast('لطفا وزن، قد و سن را وارد کنید.', 'error');
+                return;
+            }
+
+            const bmi = w / ((h / 100) ** 2);
+            let bmr = (10 * w) + (6.25 * h) - (5 * age);
+            bmr = gender === 'male' ? bmr + 5 : bmr - 161;
+            const tdee = Math.round(bmr * activity);
+
+            let status = '';
+            let pointerPos = 0;
+            if(bmi < 18.5) { status = 'کم‌وزن (لاغر)'; pointerPos = 15; }
+            else if(bmi >= 18.5 && bmi < 25) { status = 'وزن طبیعی (تناسب ایده‌آل)'; pointerPos = 45; }
+            else if(bmi >= 25 && bmi < 30) { status = 'اضافه وزن'; pointerPos = 75; }
+            else { status = 'چاق'; pointerPos = 95; }
+
+            document.getElementById('bmi-result').style.display = 'block';
+            document.getElementById('bmi-text').innerHTML = `
+                <b>شاخص توده بدنی (BMI):</b> ${bmi.toFixed(1)} (${status})<br>
+                <b>کالری مورد نیاز روزانه (TDEE):</b> ${tdee} کیلوکالری
+            `;
+            document.getElementById('bmi-pointer').style.left = pointerPos + '%';
+        }
+
+        function renderAdminStudentsTable() {
+            const tbody = document.getElementById('students-table-body');
+            tbody.innerHTML = students.map((s, index) => `
+                <tr>
+                    <td><b>${s.name}</b></td>
+                    <td>${s.phone}</td>
+                    <td><input type="text" value="${s.pass}" id="pass-${index}" style="background:transparent; border:1px solid var(--card-border); color:#fff; padding:6px; width:90px; border-radius:6px;"></td>
+                    <td>
+                        <span class="badge ${s.status === 'پرداخت شده' ? 'paid' : 'pending'}">${s.status}</span>
+                    </td>
+                    <td>
+                        <input type="file" id="file-stu-${index}" style="font-size:0.8rem; max-width: 180px;"><br>
+                        <button class="btn btn-primary" style="padding: 4px 10px; font-size: 0.75rem; margin-top: 5px;" onclick="uploadStudentFile(${index})">آپلود برنامه</button>
+                        ${s.fileName ? `<br><small style="color:var(--success);">دارای فایل</small>` : ''}
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.8rem;" onclick="updateStudentRow(${index})">بروزرسانی</button>
+                        <button class="btn btn-danger" style="padding: 6px 12px; font-size: 0.8rem;" onclick="deleteStudent(${index})">حذف</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function uploadStudentFile(index) {
+            const fileInput = document.getElementById(`file-stu-${index}`);
+            if(fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    students[index].fileData = e.target.result;
+                    students[index].fileName = fileInput.files[0].name;
+                    saveData();
+                    renderAdminStudentsTable();
+                    showToast(`فایل برای شاگرد ${students[index].name} با موفقیت آپلود شد.`, 'success');
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                showToast('لطفا یک فایل یا تصویر انتخاب کنید.', 'error');
+            }
+        }
+
+        function updateStudentRow(index) {
+            const newPass = document.getElementById(`pass-${index}`).value.trim();
+            students[index].pass = newPass;
+            saveData();
+            showToast('اطلاعات شاگرد بروزرسانی شد.', 'success');
+        }
+
+        function addNewStudentAccount() {
+            const name = document.getElementById('new-s-name').value.trim();
+            const phone = document.getElementById('new-s-phone').value.trim();
+            const pass = document.getElementById('new-s-pass').value.trim();
+            const status = document.getElementById('new-s-status').value;
+
+            if(!name || phone.length < 10 || !pass) {
+                showToast('لطفا اطلاعات حساب شاگرد را کامل وارد کنید.', 'error');
+                return;
+            }
+            students.push({ name, phone, pass, status, fileData: null, fileName: null, message: '' });
+            saveData();
+            renderAdminStudentsTable();
+            showToast('حساب شاگرد جدید ساخته شد.', 'success');
+            document.getElementById('new-s-name').value = '';
+            document.getElementById('new-s-phone').value = '';
+            document.getElementById('new-s-pass').value = '';
+        }
+
+        function deleteStudent(index) {
+            students.splice(index, 1);
+            saveData();
+            renderAdminStudentsTable();
+            showToast('حساب شاگرد حذف شد.', 'success');
+        }
+
+        function filterStudentsTable() {
+            const query = document.getElementById('search-student-input').value.toLowerCase();
+            const rows = document.querySelectorAll('#students-table-body tr');
+            rows.forEach(row => {
+                const text = row.innerText.toLowerCase();
+                row.style.display = text.includes(query) ? '' : 'none';
+            });
+        }
+
+        function updateAdminCredentials() {
+            const u = document.getElementById('new-admin-user').value.trim();
+            const p = document.getElementById('new-admin-pass').value.trim();
+            if(u && p) {
+                adminData = { user: u, pass: p };
+                saveData();
+                showToast('اطلاعات ورود مربی تغییر یافت.', 'success');
+            } else {
+                showToast('لطفا نام کاربری و رمز عبور جدید را کامل وارد کنید.', 'error');
+            }
+        }
+
+        function saveStudentLog() {
+            const week = document.getElementById('log-week').value.trim();
+            const weight = parseFloat(document.getElementById('log-weight').value);
+            const waist = parseFloat(document.getElementById('log-waist').value);
+
+            if(!week || !weight) {
+                showToast('عنوان هفته و وزن را وارد کنید.', 'error');
+                return;
+            }
+            studentLogs.push({ week, weight, waist });
+            saveData();
+            renderStudentChart();
+            showToast('اطلاعات پیشرفت این هفته ثبت شد.', 'success');
+        }
+
+        function renderStudentChart() {
+            const container = document.getElementById('chart-container');
+            const labelsContainer = document.getElementById('chart-labels');
+            if(!studentLogs.length) return;
+
+            const maxW = Math.max(...studentLogs.map(l => l.weight)) + 10;
+            container.innerHTML = studentLogs.map(l => {
+                const heightPercent = Math.round((l.weight / maxW) * 100);
+                return `
+                    <div style="display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end;">
+                        <span style="font-size: 0.75rem; color: var(--primary); margin-bottom: 5px;">${l.weight}</span>
+                        <div style="width: 32px; height: ${heightPercent}%; background: linear-gradient(180deg, var(--primary), #0284c7); border-radius: 8px 8px 0 0;"></div>
+                    </div>
+                `;
+            }).join('');
+
+            labelsContainer.innerHTML = studentLogs.map(l => `<span>${l.week}</span>`).join('');
+        }
+
+        window.onload = function() {
+            renderExercises();
+        };
     </script>
 </body>
 </html>
